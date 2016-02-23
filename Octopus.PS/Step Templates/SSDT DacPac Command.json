@@ -1,0 +1,118 @@
+{
+  "Id": "ActionTemplates-21",
+  "Name": "SSDT DacPac Command",
+  "Description": "Calls the DacFX library to perform SSDT commands such as:\n * Deploy\n * Script\n * DeployReport",
+  "ActionType": "Octopus.Script",
+  "Version": 9,
+  "Properties": {
+    "Octopus.Action.Script.Syntax": "PowerShell",
+    "Octopus.Action.Script.ScriptBody": "# Get the supplied parameters\r\n$DACPACPackageStep = $OctopusParameters[\"DACPACPackageStep\"]\r\n$DACPACPackageName = $OctopusParameters[\"DACPACPackageName\"]\r\n$PublishProfile = $OctopusParameters[\"DACPACPublishProfile\"]\r\n$Report = Format-OctopusArgument -Value $OctopusParameters[\"Report\"]\r\n$Script = Format-OctopusArgument -Value $OctopusParameters[\"Script\"]\r\n$Deploy = Format-OctopusArgument -Value $OctopusParameters[\"Deploy\"]\r\n$TargetServer = $OctopusParameters[\"TargetServer\"]\r\n$TargetDatabase = $OctopusParameters[\"TargetDatabase\"]\r\n$UseIntegratedSecurity = Format-OctopusArgument -Value $OctopusParameters[\"UseIntegratedSecurity\"]\r\n$Username = $OctopusParameters[\"SQLUsername\"]\r\n$Password = $OctopusParameters[\"SQLPassword\"]\r\n\r\n$InstallPathKey = (\"Octopus.Action[{0}].Output.Package.InstallationDirectoryPath\" -f $DACPACPackageStep)\r\n$InstallPath = $OctopusParameters[$InstallPathKey]\r\n\r\n# Expand the publish dacpac filename\r\n$DACPACPackageName = ($InstallPath + \"\\\" + $DACPACPackageName)\r\n\r\n# Expand the publish profile filename\r\n$PublishProfile = ($InstallPath + \"\\\" + $PublishProfile)\r\n\r\n# Invoke the DacPac utility\r\nInvoke-DacPacUtility -Report $Report -Script $Script -Deploy $Deploy -DacPacFilename $DACPACPackageName -TargetServer $TargetServer -TargetDatabase $TargetDatabase -UseIntegratedSecurity $UseIntegratedSecurity -Username $Username -Password $Password -PublishProfile $PublishProfile"
+  },
+  "SensitiveProperties": { },
+  "Parameters": [
+    {
+      "Name": "DACPACPackageStep",
+      "Label": "DACPAC Package Step Name",
+      "HelpText": "The step that downloaded the DACPAC to the tentacle",
+      "DefaultValue": null,
+      "DisplaySettings": {
+        "Octopus.ControlType": "StepName"
+      }
+    },
+    {
+      "Name": "DACPACPackageName",
+      "Label": "DACPAC Package Name",
+      "HelpText": "The name of the .dacpac file that contains the SSDT model.  Include the .dacpac extensions.",
+      "DefaultValue": "#{PackageName}",
+      "DisplaySettings": {
+        "Octopus.ControlType": "SingleLineText"
+      }
+    },
+    {
+      "Name": "DACPACPublishProfile",
+      "Label": "Publish profile name",
+      "HelpText": "Name of the publish profile to use",
+      "DefaultValue": "#{PublishProfile}",
+      "DisplaySettings": {
+        "Octopus.ControlType": "SingleLineText"
+      }
+    },
+    {
+      "Name": "Report",
+      "Label": "Report",
+      "HelpText": "Whether a deploy script should be generated and loaded into OctopusDeploy as an artifact",
+      "DefaultValue": "True",
+      "DisplaySettings": {
+        "Octopus.ControlType": "Checkbox"
+      }
+    },
+    {
+      "Name": "Script",
+      "Label": "Script",
+      "HelpText": "Whether a deploy script should be generated and loaded into OctopusDeploy as an artifact",
+      "DefaultValue": "True",
+      "DisplaySettings": {
+        "Octopus.ControlType": "Checkbox"
+      }
+    },
+    {
+      "Name": "Deploy",
+      "Label": "Deploy",
+      "HelpText": "Whether a deployment of the dacpac should occur",
+      "DefaultValue": "True",
+      "DisplaySettings": {
+        "Octopus.ControlType": "Checkbox"
+      }
+    },
+    {
+      "Name": "TargetServer",
+      "Label": "Target Servername",
+      "HelpText": "Name of the server to target this deployment against",
+      "DefaultValue": "#{ServerName}",
+      "DisplaySettings": {
+        "Octopus.ControlType": "SingleLineText"
+      }
+    },
+    {
+      "Name": "TargetDatabase",
+      "Label": "Target Database",
+      "HelpText": "Name of the database to target this deployment against",
+      "DefaultValue": "#{DatabaseName}",
+      "DisplaySettings": {
+        "Octopus.ControlType": "SingleLineText"
+      }
+    },
+    {
+      "Name": "UseIntegratedSecurity",
+      "Label": "Use Integrated Security",
+      "HelpText": "Whether or not to use Integrated Security",
+      "DefaultValue": "#{IntegratedSecurity}",
+      "DisplaySettings": {
+        "Octopus.ControlType": "Checkbox"
+      }
+    },
+    {
+      "Name": "SQLUsername",
+      "Label": "Username",
+      "HelpText": "User name to use to connect to the server if we are not using Integrated Security",
+      "DefaultValue": "#{Username}",
+      "DisplaySettings": {
+        "Octopus.ControlType": "SingleLineText"
+      }
+    },
+    {
+      "Name": "SQLPassword",
+      "Label": "Password",
+      "HelpText": "Password to use to connect to the server if we are not using Integrated Security",
+      "DefaultValue": "#{Password}",
+      "DisplaySettings": {
+        "Octopus.ControlType": "Sensitive"
+      }
+    }
+  ],
+  "$Meta": {
+    "ExportedAt": "2016-02-23T09:39:48.498Z",
+    "OctopusVersion": "3.2.23",
+    "Type": "ActionTemplate"
+  }
+}
