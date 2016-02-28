@@ -310,11 +310,12 @@ Function Invoke-DacPacUtility {
 		
 			Write-Host ("Dacpac deployment complete")
 		}
+
+		Unregister-Event -SourceIdentifier "ProgressChanged"
+		Unregister-Event -SourceIdentifier "Message"
 	}
 	Catch {
 		Throw ("Deployment failed: {0} `r`nReason: {1}" -f $_.Exception.Message, $_.Exception.InnerException.Message)
-		Unregister-Event -SourceIdentifier "ProgressChanged"
-		Unregister-Event -SourceIdentifier "Message"
 	}
 }
 
