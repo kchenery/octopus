@@ -7,7 +7,8 @@ SELECT
 FROM
     [dbo].[Example] AS e
 GROUP BY
-    e.[SomeData];
+    e.[SomeData]
+;
 GO
 
 CREATE UNIQUE CLUSTERED INDEX [UCI_dbo_ExampleAggregated] ON [dbo].[ExampleAggregated]([SomeData]);
