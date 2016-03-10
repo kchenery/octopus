@@ -269,6 +269,10 @@ Function Invoke-DacPacUtility {
 			$dacProfile = New-Object Microsoft.SqlServer.Dac.DacProfile
 			Write-Verbose ("Created blank publish profile")
 		}
+
+		# Specify additional deployment contributors:
+		$dacProfile.DeployOptions.AdditionalDeploymentContributors = "Public.Dac.Samples.Contributors.CreateIndexOperationalPropsModifier";
+		$dacProfile.DeployOptions.AdditionalDeploymentContributorArguments = "CreateIndexOperationalPropsModifier.Online=ON";
 	
 		$dacServices = New-Object Microsoft.SqlServer.Dac.DacServices -ArgumentList $connectionString
 		# Register the object events and output them to the verbose stream
