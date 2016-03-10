@@ -68,10 +68,12 @@
     <Folder Include="dbo\Tables" />
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Post Deployment" />
+    <Folder Include="dbo\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Example.sql" />
     <PostDeploy Include="Scripts\Post Deployment.sql" />
+    <Build Include="dbo\Views\ExampleAggregated.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Post Deployment\Populate dbo.Example.sql" />

@@ -228,20 +228,24 @@ Function Invoke-DacPacUtility {
 		[bool]$UseIntegratedSecurity,
 		[string]$UserName,
 		[string]$Password,
-		[string]$PublishProfile
+		[string]$PublishProfile,
+		[string]$AdditionalDeploymentContributors,
+		[string]$AdditionalDeploymentContributorArguments
 	)
 
 	# We output the parameters (excluding password) so that we can see what was supplied for debuging if required.  Useful for variable scoping problems
 	Write-Debug ("Invoke-DacPacUtility called.  Parameter values supplied:")
-	Write-Debug ("    Dacpac Filename:           {0}" -f $DacPacFilename)
-	Write-Debug ("    Dacpac Profile:            {0}" -f $PublishProfile)
-	Write-Debug ("    Target server:             {0}" -f $TargetServer)
-	Write-Debug ("    Target database:           {0}" -f $TargetDatabase)
-	Write-Debug ("    Using integrated security: {0}" -f $UseIntegratedSecurity)
-	Write-Debug ("    Username:                  {0}" -f $UserName)
-	Write-Debug ("    Report:                    {0}" -f $Report)
-	Write-Debug ("    Script:                    {0}" -f $Script)
-	Write-Debug ("    Deploy:                    {0}" -f $Deploy)
+	Write-Debug ("    Dacpac Filename:                  {0}" -f $DacPacFilename)
+	Write-Debug ("    Dacpac Profile:                   {0}" -f $PublishProfile)
+	Write-Debug ("    Target server:                    {0}" -f $TargetServer)
+	Write-Debug ("    Target database:                  {0}" -f $TargetDatabase)
+	Write-Debug ("    Using integrated security:        {0}" -f $UseIntegratedSecurity)
+	Write-Debug ("    Username:                         {0}" -f $UserName)
+	Write-Debug ("    Report:                           {0}" -f $Report)
+	Write-Debug ("    Script:                           {0}" -f $Script)
+	Write-Debug ("    Deploy:                           {0}" -f $Deploy)
+	Write-Debug ("    Deployment contributors:          {0}" -f $AdditionalDeploymentContributors)
+	Write-Debug ("    Deployment contributor arguments: {0}" -f $AdditionalDeploymentContributorArguments)
 
 	$DateTime = ((Get-Date).ToUniversalTime().ToString("yyyyMMddHHmmss"))
 
@@ -269,6 +273,10 @@ Function Invoke-DacPacUtility {
 			$dacProfile = New-Object Microsoft.SqlServer.Dac.DacProfile
 			Write-Verbose ("Created blank publish profile")
 		}
+
+		# Specify additional deployment contributors:
+		$dacProfile.DeployOptions.AdditionalDeploymentContributors = $AdditionalDeploymentContributors
+		$dacProfile.DeployOptions.AdditionalDeploymentContributorArguments = $AdditionalDeploymentContributorArguments
 	
 		$dacServices = New-Object Microsoft.SqlServer.Dac.DacServices -ArgumentList $connectionString
 		# Register the object events and output them to the verbose stream
