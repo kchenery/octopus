@@ -10,6 +10,8 @@ $TargetDatabase = $OctopusParameters["TargetDatabase"]
 $UseIntegratedSecurity = Format-OctopusArgument -Value $OctopusParameters["UseIntegratedSecurity"]
 $Username = $OctopusParameters["SQLUsername"]
 $Password = $OctopusParameters["SQLPassword"]
+$AdditionalDeploymentContributors = $OctopusParameters["AdditionalContributors"]
+$AdditionalDeploymentContributorArguments = $OctopusParameters["AdditionalContributorArguments"]
 
 $InstallPathKey = ("Octopus.Action[{0}].Output.Package.InstallationDirectoryPath" -f $DACPACPackageStep)
 $InstallPath = $OctopusParameters[$InstallPathKey]
@@ -21,4 +23,4 @@ $DACPACPackageName = ($InstallPath + "\" + $DACPACPackageName)
 $PublishProfile = ($InstallPath + "\" + $PublishProfile)
 
 # Invoke the DacPac utility
-Invoke-DacPacUtility -Report $Report -Script $Script -Deploy $Deploy -DacPacFilename $DACPACPackageName -TargetServer $TargetServer -TargetDatabase $TargetDatabase -UseIntegratedSecurity $UseIntegratedSecurity -Username $Username -Password $Password -PublishProfile $PublishProfile
+Invoke-DacPacUtility -Report $Report -Script $Script -Deploy $Deploy -DacPacFilename $DACPACPackageName -TargetServer $TargetServer -TargetDatabase $TargetDatabase -UseIntegratedSecurity $UseIntegratedSecurity -Username $Username -Password $Password -PublishProfile $PublishProfile -AdditionalDeploymentContributors $AdditionalDeploymentContributors -AdditionalDeploymentContributorArguements $AdditionalDeploymentContributorArguements
