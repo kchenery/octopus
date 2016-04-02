@@ -74,6 +74,7 @@
     <Folder Include="deployment" />
     <Folder Include="deployment\Tables" />
     <Folder Include="Scripts\Pre Deployment" />
+    <Folder Include="deployment\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Example.sql" />
@@ -82,6 +83,7 @@
     <Build Include="deployment\Tables\Version.sql" />
     <Build Include="deployment\deployment.sql" />
     <None Include="Scripts\Pre Deployment\Populate deployment.Version start.sql" />
+    <Build Include="deployment\Views\LatestVersion.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Post Deployment\Populate dbo.Example.sql" />
