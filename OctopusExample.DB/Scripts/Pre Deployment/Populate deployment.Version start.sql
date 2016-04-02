@@ -7,6 +7,11 @@ DECLARE @DeploymentVersion NVARCHAR(500);
 SET @DeploymentVersion = '$(DeploymentVersion)';
 
 /* Get the version number section out of the DeploymentVersion string which includes notes */
+IF LEFT(@DeploymentVersion, 1) = '#'
+BEGIN;
+	SET @DeploymentVersion = '0.0.0 - Manual Deploy';
+END;
+
 DECLARE @VersionHierarchyStr NVARCHAR(50);
 IF (CHARINDEX('-', @DeploymentVersion) > 0)
 BEGIN;

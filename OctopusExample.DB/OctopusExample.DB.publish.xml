@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <SqlCmdVariable Include="DeploymentVersion">
-      <Value>0.0.0 - Manul Deploy</Value>
+      <Value>#{Octopus.Release.Number} - #{Octopus.Release.Notes} (by #{Octopus.Deployment.CreatedBy.Username})</Value>
     </SqlCmdVariable>
   </ItemGroup>
 </Project>
