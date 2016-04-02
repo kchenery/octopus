@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="4f4109ca-22d3-47cf-a582-f0f8c63af336" ChangeDateTime="04/02/2016 09:45:52">
+    <Property Name="ElementName" Value="[deployment].[Version].[DeploymentDateUTC]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[deployment].[Version]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DeploymentStartDateUTC" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a753a1f7-4eff-4ba4-9a30-e1d1a4bf00bd" ChangeDateTime="04/02/2016 09:45:56">
+    <Property Name="ElementName" Value="[deployment].[Version].[DeploymentDateLocal]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[deployment].[Version]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DeploymentStartDateLocal" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a4cc22c1-4d1c-4b92-99a4-e52156b354dc" ChangeDateTime="04/02/2016 10:02:24">
+    <Property Name="ElementName" Value="[deployment].[Version].[DeploymentStartDateUTC]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[deployment].[Version]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[StartDateUTC]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1f1b3b68-c7b9-47b9-aa96-8892c2c6bb4f" ChangeDateTime="04/02/2016 10:02:37">
+    <Property Name="ElementName" Value="[deployment].[Version].[DeploymentEndDateUTC]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[deployment].[Version]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[EndDateUTC]" />
+  </Operation>
+</Operations>

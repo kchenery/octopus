@@ -39,6 +39,7 @@
     <DefineTrace>true</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatTSqlWarningsAsErrors>True</TreatTSqlWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -53,6 +54,7 @@
     <WarningLevel>4</WarningLevel>
     <SqlTargetName>OctopusExample</SqlTargetName>
     <TreatTSqlWarningsAsErrors>True</TreatTSqlWarningsAsErrors>
+    <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
@@ -69,11 +71,17 @@
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Post Deployment" />
     <Folder Include="dbo\Views" />
+    <Folder Include="deployment" />
+    <Folder Include="deployment\Tables" />
+    <Folder Include="Scripts\Pre Deployment" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Example.sql" />
     <PostDeploy Include="Scripts\Post Deployment.sql" />
     <Build Include="dbo\Views\ExampleAggregated.sql" />
+    <Build Include="deployment\Tables\Version.sql" />
+    <Build Include="deployment\deployment.sql" />
+    <None Include="Scripts\Pre Deployment\Populate deployment.Version start.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Post Deployment\Populate dbo.Example.sql" />
@@ -81,5 +89,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include=".nuspec" />
+    <None Include="Scripts\Post Deployment\Populate deployment.Version end.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="DeploymentVersion">
+      <DefaultValue>0.0.0 - Manul Deploy</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="OctopusExample.DB.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\Pre Deployment.sql" />
   </ItemGroup>
 </Project>

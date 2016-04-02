@@ -1,4 +1,4 @@
-﻿PRINT CONVERT(NVARCHAR(23), SYSUTCDATETIME(), 121) + ' - Populating dbo.Example';
+﻿PRINT '[' + CONVERT(NVARCHAR(50), CONVERT(DATETIMEOFFSET(3), SYSDATETIMEOFFSET()), 127) + '] Populating dbo.Example';
 GO
 WITH SourceData(ExampleID, SomeData) AS (
 

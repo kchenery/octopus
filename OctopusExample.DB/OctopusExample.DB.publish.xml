@@ -6,6 +6,11 @@
     <DeployScriptFileName>OctopusExample.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=localhost;Integrated Security=True;Pooling=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
-    <BlockOnPossibleDataLoss>True</BlockOnPossibleDataLoss>
+    <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
   </PropertyGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="DeploymentVersion">
+      <Value>0.0.0 - Manul Deploy</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
 </Project>
