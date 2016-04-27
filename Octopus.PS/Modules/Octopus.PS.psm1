@@ -285,22 +285,18 @@ Function Invoke-DacPacUtility {
 		Register-ObjectEvent -InputObject $dacServices -EventName "Message" -SourceIdentifier "Message" -Action { Write-Host ($EventArgs.Message.Message) } | Out-Null
 
 	
-		If ($Report -or $Script -or $ExtractDacpac)
+		If ($Report -or $Script)
 		{
 			# Extract a DACPAC so we can do reports and scripting faster (if both are done)
 			# dbDacPac
-			$dbDacPacFilename = ("{0}.{1}.{2}.dacpac" -f $TargetServer, $TargetDatabase, $DateTime)
+			$dbDacPacFilename = ("{0}.{1}.dacpac" -f $TargetServer, $TargetDatabase)
 			$dacVersion = New-Object System.Version(1, 0, 0, 0)
 			Write-Debug "Extracting target server dacpac"
 			$dacServices.Extract($dbDacPacFilename, $TargetDatabase, $TargetDatabase, $dacVersion)
 
 			Write-Debug ("Loading the target server dacpac for report and scripting. Filename: {0}" -f $dbDacPacFilename)
 			$dbDacPac = [Microsoft.SqlServer.Dac.DacPackage]::Load($dbDacPacFilename)
-
-			If ($ExtractDacpac)
-			{
-				New-OctopusArtifact -Path $dbDacPacFilename -Name $dbDacPacFilename
-			}
+			New-OctopusArtifact -Path $dbDacPacFilename -Name $dbDacPacFilename
 
 			# Generate a Deploy Report if one is asked for
 			If ($Report)
@@ -329,6 +325,7 @@ Function Invoke-DacPacUtility {
 			}
 		}
 
+		
 		# Deploy the dacpac if asked for
 		If ($Deploy)
 		{
@@ -337,7 +334,7 @@ Function Invoke-DacPacUtility {
 		
 			Write-Host ("Dacpac deployment complete")
 		}
-
+		
 		Unregister-Event -SourceIdentifier "ProgressChanged"
 		Unregister-Event -SourceIdentifier "Message"
 	}
