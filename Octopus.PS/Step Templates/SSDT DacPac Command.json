@@ -3,12 +3,15 @@
   "Name": "SSDT DacPac Command",
   "Description": "Calls the DacFX library to perform SSDT commands such as:\n * Deploy\n * Script\n * DeployReport",
   "ActionType": "Octopus.Script",
-  "Version": 4,
+  "Version": 5,
   "Properties": {
     "Octopus.Action.Script.Syntax": "PowerShell",
-    "Octopus.Action.Script.ScriptBody": "# Get the supplied parameters\r\n$DACPACPackageStep = $OctopusParameters[\"DACPACPackageStep\"]\r\n$DACPACPackageName = $OctopusParameters[\"DACPACPackageName\"]\r\n$PublishProfile = $OctopusParameters[\"DACPACPublishProfile\"]\r\n$Report = Format-OctopusArgument -Value $OctopusParameters[\"Report\"]\r\n$Script = Format-OctopusArgument -Value $OctopusParameters[\"Script\"]\r\n$Deploy = Format-OctopusArgument -Value $OctopusParameters[\"Deploy\"]\r\n$TargetServer = $OctopusParameters[\"TargetServer\"]\r\n$TargetDatabase = $OctopusParameters[\"TargetDatabase\"]\r\n$UseIntegratedSecurity = Format-OctopusArgument -Value $OctopusParameters[\"UseIntegratedSecurity\"]\r\n$Username = $OctopusParameters[\"SQLUsername\"]\r\n$Password = $OctopusParameters[\"SQLPassword\"]\r\n$AdditionalDeploymentContributors = $OctopusParameters[\"AdditionalContributors\"]\r\n$AdditionalDeploymentContributorArguments = $OctopusParameters[\"AdditionalContributorArguments\"]\r\n\r\n$InstallPathKey = (\"Octopus.Action[{0}].Output.Package.InstallationDirectoryPath\" -f $DACPACPackageStep)\r\n$InstallPath = $OctopusParameters[$InstallPathKey]\r\n\r\n# Expand the publish dacpac filename\r\n$DACPACPackageName = ($InstallPath + \"\\\" + $DACPACPackageName)\r\n\r\n# Expand the publish profile filename\r\n$PublishProfile = ($InstallPath + \"\\\" + $PublishProfile)\r\n\r\n# Invoke the DacPac utility\r\nInvoke-DacPacUtility -Report $Report -Script $Script -Deploy $Deploy -DacPacFilename $DACPACPackageName -TargetServer $TargetServer -TargetDatabase $TargetDatabase -UseIntegratedSecurity $UseIntegratedSecurity -Username $Username -Password $Password -PublishProfile $PublishProfile -AdditionalDeploymentContributors $AdditionalDeploymentContributors -AdditionalDeploymentContributorArguements $AdditionalDeploymentContributorArguements"
+    "Octopus.Action.Script.ScriptBody": "# Get the supplied parameters\r\n$DACPACPackageStep = $OctopusParameters[\"DACPACPackageStep\"]\r\n$DACPACPackageName = $OctopusParameters[\"DACPACPackageName\"]\r\n$PublishProfile = $OctopusParameters[\"DACPACPublishProfile\"]\r\n$Report = Format-OctopusArgument -Value $OctopusParameters[\"Report\"]\r\n$Script = Format-OctopusArgument -Value $OctopusParameters[\"Script\"]\r\n$Deploy = Format-OctopusArgument -Value $OctopusParameters[\"Deploy\"]\r\n$TargetServer = $OctopusParameters[\"TargetServer\"]\r\n$TargetDatabase = $OctopusParameters[\"TargetDatabase\"]\r\n$UseIntegratedSecurity = Format-OctopusArgument -Value $OctopusParameters[\"UseIntegratedSecurity\"]\r\n$Username = $OctopusParameters[\"SQLUsername\"]\r\n$Password = $OctopusParameters[\"SQLPassword\"]\r\n$AdditionalDeploymentContributors = $OctopusParameters[\"AdditionalContributors\"]\r\n$AdditionalDeploymentContributorArguments = $OctopusParameters[\"AdditionalContributorArguments\"]\r\n\r\n$InstallPathKey = (\"Octopus.Action[{0}].Output.Package.InstallationDirectoryPath\" -f $DACPACPackageStep)\r\n$InstallPath = $OctopusParameters[$InstallPathKey]\r\n\r\n# Expand the publish dacpac filename\r\n$DACPACPackageName = ($InstallPath + \"\\\" + $DACPACPackageName)\r\n\r\n# Expand the publish profile filename\r\n$PublishProfile = ($InstallPath + \"\\\" + $PublishProfile)\r\n\r\n# Invoke the DacPac utility\r\nInvoke-DacPacUtility -Report $Report -Script $Script -Deploy $Deploy -DacPacFilename $DACPACPackageName -TargetServer $TargetServer -TargetDatabase $TargetDatabase -UseIntegratedSecurity $UseIntegratedSecurity -Username $Username -Password $Password -PublishProfile $PublishProfile -AdditionalDeploymentContributors $AdditionalDeploymentContributors -AdditionalDeploymentContributorArguments $AdditionalDeploymentContributorArguments",
+    "Octopus.Action.Script.ScriptSource": "Inline",
+    "Octopus.Action.Script.ScriptFileName": null,
+    "Octopus.Action.Package.NuGetFeedId": null,
+    "Octopus.Action.Package.NuGetPackageId": null
   },
-  "SensitiveProperties": {},
   "Parameters": [
     {
       "Name": "DACPACPackageStep",
@@ -129,8 +132,8 @@
     }
   ],
   "$Meta": {
-    "ExportedAt": "2016-03-10T11:12:30.576Z",
-    "OctopusVersion": "3.2.24",
+    "ExportedAt": "2016-04-27T09:57:55.080Z",
+    "OctopusVersion": "3.3.10",
     "Type": "ActionTemplate"
   }
 }
