@@ -88,7 +88,7 @@
   <ItemGroup>
     <None Include="Scripts\Post Deployment\Populate dbo.Example.sql" />
     <None Include="OctopusExample.DB.publish.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include=".nuspec" />
     <None Include="Scripts\Post Deployment\Populate deployment.Version end.sql" />

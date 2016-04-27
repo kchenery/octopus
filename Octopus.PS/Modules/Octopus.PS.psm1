@@ -277,38 +277,57 @@ Function Invoke-DacPacUtility {
 		# Specify additional deployment contributors:
 		$dacProfile.DeployOptions.AdditionalDeploymentContributors = $AdditionalDeploymentContributors
 		$dacProfile.DeployOptions.AdditionalDeploymentContributorArguments = $AdditionalDeploymentContributorArguments
-	
+
 		$dacServices = New-Object Microsoft.SqlServer.Dac.DacServices -ArgumentList $connectionString
+
 		# Register the object events and output them to the verbose stream
 		Register-ObjectEvent -InputObject $dacServices -EventName "ProgressChanged" -SourceIdentifier "ProgressChanged" -Action { Write-Verbose ("DacServices: {0}" -f $EventArgs.Message) } | Out-Null
 		Register-ObjectEvent -InputObject $dacServices -EventName "Message" -SourceIdentifier "Message" -Action { Write-Host ($EventArgs.Message.Message) } | Out-Null
 
-		# Generate a Deploy Report if one is asked for
-		If ($Report)
+	
+		If ($Report -or $Script -or $ExtractDacpac)
 		{
-			Write-Host ("Generating deploy report against server: {0}, database: {1}" -f $TargetServer, $TargetDatabase)
-			$deployReport = $dacServices.GenerateDeployReport($dacPac, $TargetDatabase, $dacProfile.DeployOptions, $null)
-			$reportArtifact = ("{0}.{1}.{2}.{3}" -f $TargetServer, $TargetDatabase, $DateTime, "DeployReport.xml")
-		
-			Set-Content $reportArtifact $deployReport
+			# Extract a DACPAC so we can do reports and scripting faster (if both are done)
+			# dbDacPac
+			$dbDacPacFilename = ("{0}.{1}.{2}.dacpac" -f $TargetServer, $TargetDatabase, $DateTime)
+			$dacVersion = New-Object System.Version(1, 0, 0, 0)
+			Write-Debug "Extracting target server dacpac"
+			$dacServices.Extract($dbDacPacFilename, $TargetDatabase, $TargetDatabase, $dacVersion)
 
-			Write-Host ("Loading the deploy report to OctopusDeploy: {0}" -f $reportArtifact)
-			New-OctopusArtifact -Path $reportArtifact -Name $reportArtifact
+			Write-Debug ("Loading the target server dacpac for report and scripting. Filename: {0}" -f $dbDacPacFilename)
+			$dbDacPac = [Microsoft.SqlServer.Dac.DacPackage]::Load($dbDacPacFilename)
+
+			If ($ExtractDacpac)
+			{
+				New-OctopusArtifact -Path $dbDacPacFilename -Name $dbDacPacFilename
+			}
+
+			# Generate a Deploy Report if one is asked for
+			If ($Report)
+			{
+				Write-Host ("Generating deploy report against server: {0}, database: {1}" -f $TargetServer, $TargetDatabase)
+				$deployReport = [Microsoft.SqlServer.Dac.DacServices]::GenerateDeployReport($dacPac, $dbDacPac, $TargetDatabase, $dacProfile.DeployOptions)
+				$reportArtifact = ("{0}.{1}.{2}.{3}" -f $TargetServer, $TargetDatabase, $DateTime, "DeployReport.xml")
+		
+				Set-Content $reportArtifact $deployReport
+
+				Write-Host ("Loading the deploy report to OctopusDeploy: {0}" -f $reportArtifact)
+				New-OctopusArtifact -Path $reportArtifact -Name $reportArtifact
+			}
+
+			# Generate a Deploy Script if one is asked for
+			If ($Script)
+			{
+				Write-Host ("Generating deploy script against server: {0}, database: {1}" -f $TargetServer, $TargetDatabase)
+				$deployScript = [Microsoft.SqlServer.Dac.DacServices]::GenerateDeployScript($dacPac, $dbDacPac, $TargetDatabase, $dacProfile.DeployOptions)
+				$scriptArtifact = ("{0}.{1}.{2}.{3}" -f $TargetServer, $TargetDatabase, $DateTime, "DeployScript.sql")
+		
+				Set-Content $scriptArtifact $deployScript
+		
+				Write-Host ("Loading the deploy script to OctopusDeploy: {0}" -f $scriptArtifact)
+				New-OctopusArtifact -Path $scriptArtifact -Name $scriptArtifact
+			}
 		}
-
-		# Generate a Deploy Script if one is asked for
-		If ($Script)
-		{
-			Write-Host ("Generating deploy script against server: {0}, database: {1}" -f $TargetServer, $TargetDatabase)
-			$deployScript = $dacServices.GenerateDeployScript($dacPac, $TargetDatabase, $dacProfile.DeployOptions, $null)
-			$scriptArtifact = ("{0}.{1}.{2}.{3}" -f $TargetServer, $TargetDatabase, $DateTime, "DeployScript.sql")
-		
-			Set-Content $scriptArtifact $deployScript
-		
-			Write-Host ("Loading the deploy script to OctopusDeploy: {0}" -f $scriptArtifact)
-			New-OctopusArtifact -Path $scriptArtifact -Name $scriptArtifact
-		}
-
 
 		# Deploy the dacpac if asked for
 		If ($Deploy)
